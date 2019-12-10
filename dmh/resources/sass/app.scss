@@ -6,3 +6,71 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.h-screen{
+    height: 100vh;
+}
+.responsive {
+    margin:auto;
+    max-width: 100%;
+    height: auto;
+}
+// .navbar-toggler{
+//     background-color: #0288d1;
+//     border:none;
+// }
+// .navbar-toggler .line{
+//     background-color: white;
+// }
+.fa-bars{
+    color: #fff;
+}
+// .navbar-brand {
+//     padding: 0px;
+// }
+// .navbar-brand>img {
+//     height: 15vh;
+//     padding: 5px;
+//     width: auto;
+// }
+// .navbar-light .navbar-brand {
+//     color: white;
+// }
+// .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+//     color: #0288d1;
+//     background-color: #fff;
+// }
+// .nav-link:hover{
+//     background-color: #03A9F4;
+// }
+a{
+    color: white;
+}
+a:hover{
+    color: white;
+}
+.carousel-img{
+    filter:grayscale(100%)
+}
+.pd-parallax{
+    position: relative;
+    // opacity: 0.65;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 400px;
+    margin: 0;
+    padding: 0;
+}
+.pd-parallax h1{
+    background-color: #004085;
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+.pd-parallax .pd-title{
+    padding-top: 150px;
+    width: auto;
+    margin: 0 auto;
+}
