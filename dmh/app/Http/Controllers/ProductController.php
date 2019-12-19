@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Product;
 use Illuminate\Http\Request;
 
-class ProductoController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,13 +13,9 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $products = [
-            ['title' => 'Producto #1'],
-            ['title' => 'Producto #2'],
-            ['title' => 'Producto #3'],
-            ['title' => 'Producto #4'],
-        ];
-        return view('products', compact('products'));
+        return view('products.index', [
+            'products' => Product::latest()->paginate()
+        ]);
     }
 
     /**
@@ -39,11 +35,15 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        //
+        return view('products.show', [
+            'product' => $product
+        ]);
     }
-
+    public function create(){
+        return view('products.create');
+    }
     /**
      * Update the specified resource in storage.
      *

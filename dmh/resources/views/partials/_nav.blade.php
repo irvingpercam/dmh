@@ -1,8 +1,8 @@
 <nav>
     <ul>
-        <li class="{{ setActive('home') }}"><a href="/">@lang('Home')</a></li>
-        <li class="{{ setActive('about') }}"><a href="/about">@lang('About')</a></li>
-        <li class="{{ setActive('products') }}"><a href="/products">@lang('Products')</a></li>
-        <li class="{{ setActive('contact') }}"><a href="/contact">@lang('Contact')</a></li>
+        <li class="{{ setActive('home') }}"><a href="{{ route('home') }}">@lang('Home')</a></li>
+        <li class="{{ setActive('about') }}"><a href="{{ route('about') }}">@lang('About')</a></li>
+        <li class="{{ setActive('products.*') }}"><a href="{{ route('products.index') }}">@lang('Products')</a></li>
+        <li class="{{ setActive('contact') }}"><a href="{{ route('contact') }}">@lang('Contact')</a></li>
     </ul>
 </nav>

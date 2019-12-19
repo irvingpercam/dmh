@@ -12,7 +12,9 @@
 */
 
 Route::view('/', 'home')->name('home');
-Route::view('/about', 'about')->name('about');
-Route::get('/products', 'ProductoController@index')->name('products');
-Route::view('/contact', 'contact')->name('contact');
-Route::post('contact', 'MessageController@store');
+Route::view('/nosotros', 'about')->name('about');
+Route::get('/productos', 'ProductController@index')->name('products.index');
+Route::get('/productos/crear', 'ProductController@create')->name('products.create');
+Route::get('/productos/{product}', 'ProductController@show')->name('products.show');
+Route::view('/contacto', 'contact')->name('contact');
+Route::post('contact', 'MessageController@store')->name('messages.store');
