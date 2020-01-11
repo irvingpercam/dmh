@@ -15,6 +15,7 @@ Route::view('/', 'home')->name('home');
 Route::view('/nosotros', 'about')->name('about');
 Route::get('/productos', 'ProductController@index')->name('products.index');
 Route::get('/productos/crear', 'ProductController@create')->name('products.create');
+Route::post('/productos', 'ProductController@store')->name('products.store');
 Route::get('/productos/{product}', 'ProductController@show')->name('products.show');
 Route::view('/contacto', 'contact')->name('contact');
 Route::post('contact', 'MessageController@store')->name('messages.store');

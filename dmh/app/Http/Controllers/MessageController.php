@@ -14,7 +14,7 @@ class MessageController extends Controller
             'subject' => 'required',
             'content' => 'required|min:3',
         ]);
-        Mail::to('irving6258@gmail.com')->queue(new MessageReceived($message));
+        Mail::to('eric-ventas@hotmail.com')->queue(new MessageReceived($message));
         return 'Mensaje enviado';
     }
 }
