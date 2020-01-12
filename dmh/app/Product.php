@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $fillable = [
-        'title','url','description','category','type','brand','img'
-    ];
+    protected $guarded = [];
     public function getRouteKeyName(){
         return 'url';
     }
