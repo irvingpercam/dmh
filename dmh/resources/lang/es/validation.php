@@ -181,5 +181,9 @@ return [
         'title'                 => 'título',
         'username'              => 'usuario',
         'year'                  => 'año',
+        'category'              => 'categoría',
+        'type'                  => 'tipo',
+        'brand'                 => 'marca',
+        'img'                   => 'imagen',
     ],
 ];

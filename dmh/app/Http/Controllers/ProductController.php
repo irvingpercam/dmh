@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Product;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\CreateProductRequest;
 class ProductController extends Controller
 {
     /**
@@ -24,20 +24,9 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(CreateProductRequest $request)
     {
-        $fields = request()->validate([
-            'title' => required,
-            'url' => required,
-            'description' => required,
-            'category' => required,
-            'type' => required,
-            'brand' => required,
-            'img' => required,
-        ]);
-        
-        Product::create($fields);
-
+        Product::create($request->validated());
         return redirect()->route('products.index');
     }
 
