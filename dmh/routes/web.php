@@ -13,11 +13,6 @@
 
 Route::view('/', 'home')->name('home');
 Route::view('/nosotros', 'about')->name('about');
-Route::get('/productos', 'ProductController@index')->name('products.index');
-Route::get('/productos/crear', 'ProductController@create')->name('products.create');
-Route::get('/productos/{product}/editar', 'ProductController@edit')->name('products.edit');
-Route::patch('/productos/{product}', 'ProductController@update')->name('products.update');
-Route::post('/productos', 'ProductController@store')->name('products.store');
-Route::get('/productos/{product}', 'ProductController@show')->name('products.show');
+Route::resource('productos', 'ProductController')->names('products')->parameters(['productos' => 'product']);
 Route::view('/contacto', 'contact')->name('contact');
 Route::post('contact', 'MessageController@store')->name('messages.store');
