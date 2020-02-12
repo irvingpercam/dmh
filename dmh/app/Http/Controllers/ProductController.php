@@ -52,7 +52,9 @@ class ProductController extends Controller
         ]);
     }
     public function create(){
-        return view('products.create');
+        return view('products.create', [
+            'product' => new Product
+        ]);
     }
     /**
      * Update the specified resource in storage.
