@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Product;
 use Illuminate\Http\Request;
-use App\Http\Requests\CreateProductRequest;
+use App\Http\Requests\SaveProductRequest;
 class ProductController extends Controller
 {
     /**
@@ -24,10 +24,19 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateProductRequest $request)
+    public function store(SaveProductRequest $request)
     {
         Product::create($request->validated());
         return redirect()->route('products.index');
+    }
+
+    /**
+     * Edit the specified resource.
+     */
+    public function edit(Product $product){
+        return view('products.edit', [
+            'product' => $product
+        ]);
     }
 
     /**
@@ -52,9 +61,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Product $product, SaveProductRequest $request)
     {
-        //
+        $product->update($request->validated());
+        return redirect()->route('products.show', $product);
     }
 
     /**
