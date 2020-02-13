@@ -2,6 +2,7 @@
 @section('title', 'Contact')
 @section('content')
     <h1>@lang('Contact')</h1>
+    @include('partials.session-status')
     <form method="POST" action="{{ route('messages.store') }}">
         @csrf
         <input type="text" name="name" id="name" placeholder="Nombre..." value="{{ old('name') }}"><br>

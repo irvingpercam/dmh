@@ -27,7 +27,7 @@ class ProductController extends Controller
     public function store(SaveProductRequest $request)
     {
         Product::create($request->validated());
-        return redirect()->route('products.index');
+        return redirect()->route('products.index')->with('status', 'El proyecto fue creado con éxito.');
     }
 
     /**
@@ -66,7 +66,7 @@ class ProductController extends Controller
     public function update(Product $product, SaveProductRequest $request)
     {
         $product->update($request->validated());
-        return redirect()->route('products.show', $product);
+        return redirect()->route('products.show', $product)->with('status', 'El proyecto fue actualizado con éxito.');
     }
 
     /**
@@ -78,6 +78,6 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('products.index');
+        return redirect()->route('products.index')->with('status', 'El proyecto fue eliminado con éxito.');
     }
 }
