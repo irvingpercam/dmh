@@ -14,6 +14,9 @@
 Route::view('/', 'home')->name('home');
 Route::view('/nosotros', 'about')->name('about');
 Route::resource('productos', 'ProductController')->names('products')->parameters(['productos' => 'product']);
+Route::resource('marcas', 'BrandController')->names('brands')->parameters(['marcas' => 'brand']);
+Route::resource('categorias', 'CategoryController')->names('categories')->parameters(['categorias' => 'category']);
+Route::resource('tipos', 'TypeController')->names('types')->parameters(['tipos' => 'type']);
 Route::view('/contacto', 'contact')->name('contact');
 Route::post('contact', 'MessageController@store')->name('messages.store');
 Auth::routes(['register' => false]);
