@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Brand;
+use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\SaveBrandRequest;
 class BrandController extends Controller
@@ -13,7 +14,9 @@ class BrandController extends Controller
      */
     public function index()
     {
-        //
+        return view('brands.index', [
+            'brands' => Brand::latest()->paginate()
+        ]);
     }
 
     /**
@@ -23,7 +26,9 @@ class BrandController extends Controller
      */
     public function create()
     {
-        //
+        return view('brands.create', [
+            'brand' => new Brand
+        ]);
     }
 
     /**
@@ -32,9 +37,10 @@ class BrandController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SaveBrandRequest $request)
     {
-        //
+        Brand::create($request->validated());
+        return redirect()->route('brands.index')->with('status', 'La marca de herramienta fue registrada con éxito.');
     }
 
     /**
@@ -43,9 +49,11 @@ class BrandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Brand $brand)
     {
-        //
+        return view('brands.show', [
+            'brand' => $brand
+        ]);
     }
 
     /**
@@ -54,9 +62,11 @@ class BrandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Brand $brand)
     {
-        //
+        return view('brands.edit', [
+            'brand' => $brand
+        ]);
     }
 
     /**
@@ -66,9 +76,10 @@ class BrandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Brand $brand, SaveBrandRequest $request)
     {
-        //
+        $brand->update($request->validated());
+        return redirect()->route('brands.show', $brands)->with('status', 'La marca de herramienta fue actualizada con éxito.');
     }
 
     /**
@@ -77,8 +88,12 @@ class BrandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Brand $brand)
     {
-        //
+        $brandid = $brand->id;
+        $products = App\Product::where('brand', $brandid);
+        $products->delete();
+        $brand->delete();
+        return redirect()->route('brands.index')->with('status', 'La marca de herramienta y sus productos fueron eliminados con éxito.');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Category;
+use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\SaveCategoryRequest;
 class CategoryController extends Controller
@@ -13,7 +14,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return view('categories.index', [
+            'categories' => Category::latest()->paginate()
+        ]);
     }
 
     /**
@@ -23,7 +26,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('categories.create', [
+            'category' => new Category
+        ]);
     }
 
     /**
@@ -32,9 +37,10 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SaveCategoryRequest $request)
     {
-        //
+        Category::create($request->validated());
+        return redirect()->route('categories.index')->with('status', 'La categoría de herramienta fue registrada con éxito.');
     }
 
     /**
@@ -43,9 +49,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        //
+        return view('categories.show', [
+            'category' => $category
+        ]);
     }
 
     /**
@@ -54,9 +62,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        //
+        return view('categories.edit', [
+            'category' => $category
+        ]);
     }
 
     /**
@@ -66,9 +76,10 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Category $category, SaveCategoryRequest $request)
     {
-        //
+        $category->update($request->validated());
+        return redirect()->route('categories.show', $category)->with('status', 'La categoría de herramienta fue actualizada con éxito.');
     }
 
     /**
@@ -77,8 +88,12 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        //
+        $categoryid = $category->id;
+        $products = App\Product::where('category', $categoryid);
+        $products->delete();
+        $category->delete();
+        return redirect()->route('categories.index')->with('status', 'La categoría de herramienta y sus productos fueron eliminados con éxito.');
     }
 }
