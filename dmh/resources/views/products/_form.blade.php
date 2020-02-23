@@ -16,17 +16,32 @@
 <br>
 <label for="category">
     Categoría<br>
-    <input type="number" name="category" id="category" value="{{ old('category', $product->category) }}">
+    {{-- <input type="number" name="category" id="category" value="{{ old('category', $product->category) }}"> --}}
+    <select name="category" id="category">
+        @foreach ($categories as $category)
+            <option value="{{ $category->id }}">{{ $category->name }}</option>
+        @endforeach
+    </select>
 </label>
 <br>
 <label for="type">
     Tipo<br>
-    <input type="number" name="type" id="type" value="{{ old('type', $product->type) }}">
+    {{-- <input type="number" name="type" id="type" value="{{ old('type', $product->type) }}"> --}}
+    <select name="type" id="type">
+        @foreach ($types as $type)
+            <option value="{{ $type->id }}">{{ $type->name }}</option>
+        @endforeach
+    </select>
 </label>
 <br>
 <label for="brand">
     Marca<br>
-    <input type="number" name="brand" id="brand" value="{{ old('brand', $product->brand) }}">
+    {{-- <input type="number" name="brand" id="brand" value="{{ old('brand', $product->brand) }}"> --}}
+    <select name="brand" id="brand">
+        @foreach ($brands as $brand)
+            <option value="{{ $brand->id }}">{{ $brand->title }}</option>
+        @endforeach
+    </select>
 </label>
 <br>
 <label for="img">

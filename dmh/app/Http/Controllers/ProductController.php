@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 use App\Product;
+use App\Category;
+use App\Type;
+use App\Brand;
 use Illuminate\Http\Request;
 use App\Http\Requests\SaveProductRequest;
 class ProductController extends Controller
@@ -55,9 +58,14 @@ class ProductController extends Controller
         ]);
     }
     public function create(){
+        $data = [
+            'types' => Type::all(),
+            'brands' => Brand::all(), 
+            'categories' => Category::all()
+        ];
         return view('products.create', [
-            'product' => new Product
-        ]);
+            'product' => new Product,
+        ])->with($data);
     }
     /**
      * Update the specified resource in storage.

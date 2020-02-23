@@ -24,12 +24,14 @@ class SaveCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'category' => 'required'
+            'name' => 'required',
+            'url' => 'required'
         ];
     }
     public function messages(){
         return [
-            'category.required' => 'La categoría necesita un nombre.'
+            'category.required' => 'La categoría necesita un nombre.',
+            'url.required' => 'La categoría necesita una url.'
         ];
     }
 }

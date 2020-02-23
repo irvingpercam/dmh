@@ -24,12 +24,14 @@ class SaveBrandRequest extends FormRequest
     public function rules()
     {
         return [
-            'brand' => 'required'
+            'title' => 'required',
+            'url' => 'required'
         ];
     }
     public function messages(){
         return [
-            'brand.required' => 'La marca necesita un nombre.'
+            'title.required' => 'La marca necesita un nombre.',
+            'url.required' => 'La marca necesita una url.'
         ];
     }
 }

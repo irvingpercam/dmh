@@ -17,9 +17,9 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('url')->unique();
-            $table->integer('brand');
-            $table->integer('category');
-            $table->integer('type');
+            $table->integer('brand')->references('id')->on('brands')->onDelete('cascade');
+            $table->integer('category')->references('id')->on('categories')->onDelete('cascade');
+            $table->integer('type')->references('id')->on('types')->onDelete('cascade');
             $table->text('description');
             $table->string('img');
             $table->timestamps();

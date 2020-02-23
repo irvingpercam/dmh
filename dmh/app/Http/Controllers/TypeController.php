@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Type;
 use App\Product;
+use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\SaveTypeRequest;
 class TypeController extends Controller
@@ -27,8 +28,8 @@ class TypeController extends Controller
     public function create()
     {
         return view('types.create', [
-            'type' => new Type
-        ]);
+            'type' => new Type,
+        ], [ 'categories' => Category::all() ]);
     }
 
     /**
@@ -91,7 +92,7 @@ class TypeController extends Controller
     public function destroy(Type $type)
     {
         $typeid = $type->id;
-        $products = App\Product::where('type', $typeid);
+        $products = Product::where('type', $typeid);
         $products->delete();
         $type->delete();
         return redirect()->route('types.index')->with('status', 'El tipo de herramienta y sus productos fueron eliminados con éxito.');

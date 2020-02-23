@@ -24,12 +24,16 @@ class SaveTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required'
+            'name' => 'required',
+            'category_id' => 'required',
+            'url' => 'required'
         ];
     }
     public function messages(){
         return [
-            'type.required' => 'El tipo de herramienta necesita un nombre.'
+            'type.required' => 'El tipo necesita un nombre.',
+            'category_id.required' => 'El tipo necesita una categoría.',
+            'url.required' => 'El tipo necesita una url.'
         ];
     }
 }

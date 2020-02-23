@@ -15,7 +15,9 @@ class CreateTypesTable extends Migration
     {
         Schema::create('types', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('type');
+            $table->string('name');
+            $table->integer('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->string('url')->unique();
             $table->timestamps();
         });
     }

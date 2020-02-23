@@ -91,7 +91,7 @@ class BrandController extends Controller
     public function destroy(Brand $brand)
     {
         $brandid = $brand->id;
-        $products = App\Product::where('brand', $brandid);
+        $products = Product::where('brand', $brandid);
         $products->delete();
         $brand->delete();
         return redirect()->route('brands.index')->with('status', 'La marca de herramienta y sus productos fueron eliminados con éxito.');

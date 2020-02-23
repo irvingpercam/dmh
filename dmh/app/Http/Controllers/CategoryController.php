@@ -91,7 +91,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $categoryid = $category->id;
-        $products = App\Product::where('category', $categoryid);
+        $products = Product::where('category', $categoryid);
         $products->delete();
         $category->delete();
         return redirect()->route('categories.index')->with('status', 'La categoría de herramienta y sus productos fueron eliminados con éxito.');
