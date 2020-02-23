@@ -16,7 +16,8 @@ class TypeController extends Controller
     public function index()
     {
         return view('types.index', [
-            'types' => Type::latest()->paginate()
+            'typesH' => Type::where('category_id', 1)->paginate(),
+            'typesM' => Type::where('category_id', 2)->paginate(),
         ]);
     }
 
