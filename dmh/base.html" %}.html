@@ -1,0 +1,172 @@
+{% extends "schedueling/base.html" %}
+{% load static %}
+{% block content %}
+<h1>Agenda una cita</h1>
+<form action = "/add_appointment_form_submission/" method = "POST">
+    {% csrf_token %}
+      <fieldset disabled>
+       <!-- <h1>CAR: {{request.session.carnet}}</h1> -->
+        <div class="form-group">
+          <label for="disabledTextInput">Correo electrónico registrado</label>
+          <input type="text" id="disabledTextInput" class="form-control" value="{{ user.email }}">
+          <label for="disabledTextInput">Nombre de usuario registrado</label>
+          <input type="text" id="disabledTextInput" class="form-control" value="{{ user.username }}">
+        </div>
+      </fieldset>
+       <!-- <link rel="stylesheet" type="text/css" href="{% static 'schedueling/materialize.css' %}"> -->
+        <div class="form-group">
+        <label for="idService">Selecciona un servicio</label>
+          <select hidden class="icons" id="idService" name="idService">
+              <option value="" selected disabled hidden>Servicios disponibles ▽ </option>
+              {% for nameService in services %}
+                {% if nameService.status == 1 %} <!-- Active service has status 0 -->
+                    {% if nameService.idService == 3 %} 
+                        <option data-icon="{% static 'schedueling/img/PROTESIS.png' %}" value="{{nameService.idService}}">{{nameService.nameService}}</option>
+                    {% elif nameService.idService == 4 %}
+                        <option data-icon="{% static 'schedueling/img/BAJA-VISION.png' %}" value="{{nameService.idService}}">{{nameService.nameService}}</option>
+                    {% elif nameService.idService == 5 %}
+                        <option data-icon="{% static 'schedueling/img/IMAGENOLOGIA.png' %}" value="{{nameService.idService}}">{{nameService.nameService}}</option>
+                    {% elif nameService.idService == 6 %}
+                        <option data-icon="{% static 'schedueling/img/RETINATRANS.png' %}" value="{{nameService.idService}}">{{nameService.nameService}}</option>
+                    {% elif nameService.idService == 7 %}
+                        <option data-icon="{% static 'schedueling/img/CORNEATRANS.png' %}" value="{{nameService.idService}}">{{nameService.nameService}}</option>
+                    {% elif nameService.idService == 8 %}
+                        <option data-icon="{% static 'schedueling/img/GLAUTRANS.png' %}" value="{{nameService.idService}}">{{nameService.nameService}}</option>
+                    {% elif nameService.idService == 9 %}
+                        <option data-icon="{% static 'schedueling/img/OFTALPED-1.png' %}" value="{{nameService.idService}}">{{nameService.nameService}}</option>
+                    {% endif %}
+                {% endif %}
+              {% endfor %}
+          </select>
+          <br>
+          <label for="datetimepicker">Seleccione la fecha</label>
+          <input name = "date" id="datetimepicker" type="text" autocomplete="off" readonly="readonly">
+        </div>
+        <div class="form-group">
+            <input type="hidden" id="status" name="status" value="1">
+            <input type="hidden" id="carnet" name="carnet" value="{{request.session.carnet}}">
+        </div>
+        <button type="submit" class="btn btn-success">Confirmar</button>
+    </form>
+    {% if message %}
+    <br>
+    <div class="alert alert-success">{{message}}</div>
+    <a class="btn btn-dark" href="{{link}}" target="_blank" role="button">Guardar en Google Calendar</a>
+    {% elif error %}
+    <br>
+    <div class="alert alert-danger">{{error}}</div>
+        {% if not availableError and fullnumOffices %}
+            <p>Usted seleccionó: {{fulldateString}}</p>
+            <p>Horarios disponibles para agendar citas:</p>
+            {% for av in variable %}
+            <p>Fecha: {{dateString}} a las {{av}} horas</p>
+            {% endfor %}
+        {% elif availableError %}
+        <div class="alert alert-danger">{{availableError}}</div>
+        {% endif %}
+        <!-- {% for idAppointment in takenAppointments %}
+        <h1>{{idAppointment.date}}</h1>
+        {% endfor %} -->
+    {% endif %}
+    <br>
+    <br>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        M.AutoInit();
+        $("#idService").change(function () {
+            var idService = $(this).val();
+            $("#datetimepicker").val('');
+            var dtot = new Date(); //Variable for current date
+            current_date = dtot.getDay();
+            console.log(current_date);
+            $.ajax({
+            url: '/ajax/validate_service_date/',
+            data: {
+                'idService': idService
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.is_available) {
+                    // Array containing days as strings
+                    var days = ['D', 'L', 'M', 'MI', 'J', 'V', 'S'];
+                    // Array containing days as int numbers
+                    var daysInt = [0,1,2,3,4,5,6];
+                    // Variable that gets the startDay from DB
+                    var startDay = data.startDay;
+                    // Variable that gets the endDay from DB
+                    var endDay = data.endDay;
+                    // Variable that gets the startTime from DB
+                    var startTime = data.startTime;
+                    // Variable that gets the endTime from DB
+                    var endTime = data.endTime;
+                    // Variable that gets the duration from DB as minutes
+                    var stepHours = data.duration*60;
+                    /* This variables get the index of the day string in the days array */
+                    var stdInt = days.indexOf(startDay);
+                    var endInt = days.indexOf(endDay);
+                    /* Two arrays are created, one for allowed days and other for disabled days*/
+                    var allowedDays = new Array();
+                    var disabledDays = new Array();
+                    /* This variable is a counter */
+                    var i = 0;
+                    /* Loop that fills the allowedDays array */
+                    for (var count = stdInt; count < endInt+1; count++){
+                        allowedDays[i] = count;
+                        i++;
+                    }
+                    /* The disabled days are obtained by filtering the daysInt array */
+                    disabledDays = daysInt.filter(function(item) { return allowedDays.indexOf(item) === -1 })
+                    console.log(disabledDays);
+                    /* We make this comparison because if a service has no disabled days, then the filter returns
+                    the allowed days */
+                    var compare = JSON.stringify(daysInt)==JSON.stringify(disabledDays);
+                    console.log(compare);          
+                    /* If the comparison of daysInt and disabledDays is TRUE, that means that we have no disabled days */
+                    if(compare == true){
+                        disabledDays = null;
+                        $.datetimepicker.setLocale('es');
+                        $("#datetimepicker").datetimepicker({
+                            minTime: startTime,
+                            maxTime: endTime,
+                            step: stepHours,
+                            format: 'Y-m-d H:i',
+                            minDate:"1",
+                            /* An option for disabled days is not set because we do not have disabled days */
+                        });
+                    }
+                    /* This condition applies in case we do have disabled days */
+                    else if (compare == false){
+                        $.datetimepicker.setLocale('es');
+                        $("#datetimepicker").datetimepicker({
+                            minTime: startTime,
+                            maxTime: endTime,
+                            step: stepHours,
+                            format: 'Y-m-d H:i',
+                            minDate:"1",
+                            disabledWeekDays: disabledDays,
+                        });
+                    }                                                   
+                }
+            }
+            });
+    
+        });
+    </script>
+<script>
+    $("#datetimepicker").change(function () {
+      console.log( $(this).val() );
+    });
+</script>
+<!-- <script>
+        $(function () {
+            $.datetimepicker.setLocale('es');
+            $("#datetimepicker").datetimepicker({
+            format: 'Y-m-d H:i',
+            minDate:"1",
+            disabledWeekDays: [0],
+            });
+        });
+</script> -->
+{% endblock content %}

@@ -50,3 +50,23 @@
 </label>
 <br>
 <button>{{ $btnText }}</button>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $("#category").change(function(){
+        var categoryType = $(this).val();
+        $.ajax({
+            type: 'POST',
+            url:'/validate_cat_type/',
+            data:{
+                'category': category
+            },
+            dataType: 'json',
+            success: function(msg){
+                alert(msg);
+            }
+        });
+    });
+</script>

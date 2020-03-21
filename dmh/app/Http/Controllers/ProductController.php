@@ -59,13 +59,22 @@ class ProductController extends Controller
     }
     public function create(){
         $data = [
-            'types' => Type::all(),
+            'types' => [],
             'brands' => Brand::all(), 
             'categories' => Category::all()
         ];
         return view('products.create', [
             'product' => new Product,
         ])->with($data);
+    }
+    public function validate_cat_type(Request $request){
+        if($request->ajax()){
+            $catType = $request->get();
+            $data = [
+                'types' => Type::where('category_id', $catType),
+            ];
+            return response()->json(["msg" => "Workin"]);
+        }
     }
     /**
      * Update the specified resource in storage.
